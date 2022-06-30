@@ -3,8 +3,8 @@ import { View, Text } from "react-native";
 
 export function RestaurantsScreen() {
   return (
-    <view>
-      <Text>Extamos en la screen Restaurants</Text>
-    </view>
+    <View>
+      <Text>Estamos en la screen Restaurants</Text>
+    </View>
   );
 }
