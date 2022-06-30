@@ -3,8 +3,8 @@ import { View, Text } from "react-native";
 
 export function AccountScreen() {
   return (
-    <Vie>
+    <View>
       <Text>Estamos en la screen de Account</Text>
-    </Vie>
+    </View>
   );
 }
