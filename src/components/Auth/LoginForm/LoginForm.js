@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
+import { useFormik } from "formik";
+import { initialValues, validationSchema } from "./LoginForm.data";
 import { styles } from "./LoginForm.styles";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onShowHidePassword = () => setShowPassword((prevState) => !prevState);
+
+  const formik = useFormik({
+    initialValues: initialValues(),
+    validationSchema: validationSchema(),
+    validateOnChange: false,
+    onSubmit: (formValue) => {
+      console.log(formValue);
+    },
+  });
 
   return (
     <View style={styles.content}>
@@ -16,6 +27,8 @@ export function LoginForm() {
         rightIcon={
           <Icon type="material-community" name="at" iconStyle={styles.icon} />
         }
+        onChangeText={(text) => formik.setFieldValue("email", text)}
+        errorMessage={formik.errors.email}
       />
       <Input
         placeholder="Contraseña"
@@ -29,11 +42,15 @@ export function LoginForm() {
             onPress={onShowHidePassword}
           />
         }
+        onChangeText={(text) => formik.setFieldValue("password", text)}
+        errorMessage={formik.errors.password}
       />
       <Button
         title="Iniciar sesión"
         containerStyle={styles.btnContainer} //checar mas adelante
         buttonStyle={styles.btn}
+        onPress={formik.handleSubmit}
+        loading={formik.isSubmitting}
       />
     </View>
   );
