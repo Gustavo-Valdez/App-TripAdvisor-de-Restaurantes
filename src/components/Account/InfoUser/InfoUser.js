@@ -2,13 +2,24 @@ import React from "react";
 import { View } from "react-native";
 import { Avatar, Text } from "react-native-elements";
 import { getAuth } from "firebase/auth";
+import * as ImagePicker from "expo-image-picker";
 import { styles } from "./infoUser.styles";
 
 export function InfoUser() {
   const { uid, photoURL, displayName, email } = getAuth().currentUser;
 
-  const changeAvatar = () => {
-    console.log("Cambiar avatar");
+  const changeAvatar = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    if (!result.cancelled) uploadImage(result.uri);
+  };
+
+  const uploadImage = (uri) => {
+    console.log(uri);
   };
 
   return (
