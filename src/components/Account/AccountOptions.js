@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
-import { ListItem, Icon } from "react-native-elements";
+import { ListItem, Icon, Text } from "react-native-elements";
 import { map } from "lodash";
+import { Modal } from "../../components/Shared";
 
 export function AccountOptions() {
-  const menuOptions = getMenuOptions();
+  const [showModal, setShowModal] = useState(false);
+  const [renderComponent, setRenderComponent] = useState(null);
+
+  const onCloseOpenModal = () => setShowModal((prevState) => !prevState);
+
+  const selectedComponent = (key) => {
+    if (key === "displayName") {
+      setRenderComponent(<Text>Cambiar nombre y apellidos</Text>);
+    }
+
+    if (key === "email") {
+      setRenderComponent(<Text>Cambiar email</Text>);
+    }
+
+    if (key === "password") {
+      setRenderComponent(<Text>Cambiar contraseña</Text>);
+    }
+
+    onCloseOpenModal();
+  };
+
+  const menuOptions = getMenuOptions(selectedComponent);
 
   return (
     <View>
@@ -25,11 +47,15 @@ export function AccountOptions() {
           />
         </ListItem>
       ))}
+
+      <Modal show={showModal} close={onCloseOpenModal}>
+        {renderComponent}
+      </Modal>
     </View>
   );
 }
 
-function getMenuOptions() {
+function getMenuOptions(selectedComponent) {
   return [
     {
       title: "Cambiar Nombre y Apellidos",
@@ -38,7 +64,7 @@ function getMenuOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => console.log("Cambiar nombre y apellidos"),
+      onPress: () => selectedComponent("displayName"),
     },
     {
       title: "Cambiar Email",
@@ -47,7 +73,7 @@ function getMenuOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => console.log("Cambiar email"),
+      onPress: () => selectedComponent("email"),
     },
     {
       title: "Cambiar contraseña",
@@ -56,7 +82,7 @@ function getMenuOptions() {
       iconColorLeft: "#ccc",
       iconNameRight: "chevron-right",
       iconColorRight: "#ccc",
-      onPress: () => console.log("Cambiar contraseña"),
+      onPress: () => selectedComponent("password"),
     },
   ];
 }
